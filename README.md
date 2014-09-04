@@ -8,7 +8,7 @@ firewall config.json
 
 #### Remove the rules within the config
 ```bash
-firewall -remove config.json
+firewall -rm config.json
 ```
 
 #### Sample config
