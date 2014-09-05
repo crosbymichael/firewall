@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -64,7 +65,18 @@ func iptables(args ...string) error {
 		args[0] = "-D"
 	}
 
-	return exec.Command("iptables", args...).Run()
+	cmd := exec.Command("iptables", args...)
+
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		if bytes.Contains(out, []byte("does a matching rule exist in that chain?")) {
+			return nil
+		}
+
+		return err
+	}
+
+	return nil
 }
 
 func main() {
